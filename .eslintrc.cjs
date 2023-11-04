@@ -16,5 +16,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'no-warning-comments': 'off',
+    'no-console': 'off',
+    'no-unused-vars': 'off',
   },
-}
+};
