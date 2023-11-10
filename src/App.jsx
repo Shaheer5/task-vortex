@@ -11,6 +11,7 @@ import { useAuthContext } from './hooks/useAuthContext';
 
 // styles
 import './App.css'
+import Sidebar from './components/Sidebar.jsx';
 
 function App() {
 
@@ -19,20 +20,23 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
-        <Routes>
-          {/* <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+        <Sidebar />
+        <div className="container">
+          <Navbar />
+          <Routes>
+            {/* <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
           <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
           <Route path="/dashboard" element={user ? <Navigate to="/" /> : <Dashboard />} />
           <Route path="/create" element={user ? <Navigate to="/" /> : <Create />} /> */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/create" element={<Create />} />
-        </Routes>
-        <ToastContainer />
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/create" element={<Create />} />
+          </Routes>
+          <ToastContainer />
+        </div>
       </Router>
     </div>
   );

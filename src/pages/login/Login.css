@@ -1,9 +1,7 @@
 .login-form {
+  max-width: 340px;
   margin: 60px auto;
   padding: 20px;
-}
-.login-form .form {
-  min-width: 340px;
 }
 .login-form label {
   display: block;
