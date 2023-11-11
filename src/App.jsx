@@ -35,8 +35,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create" element={<Create />} />
           </Routes>
-          <ToastContainer />
         </div>
+        <ToastContainer />
       </Router>
     </div>
   );
