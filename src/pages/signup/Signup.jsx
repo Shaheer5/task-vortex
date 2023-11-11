@@ -41,7 +41,7 @@ export default function Signup() {
       toast.warning("Passwords do not match. Please confirm your password.", { autoClose: 2000 });
       return;
     } else if (isConfirmed) {
-      signup(displayName, email, password);
+      signup(displayName, email, password, thumbnail);
       return;
     }
     console.log(error);
