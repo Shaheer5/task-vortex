@@ -11,18 +11,14 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
-  const [isValid, setIsValid] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const { signup, isPending, error } = useSignup();
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailError, setThumbnailError] = useState(null);
+  const { signup, isPending, error } = useSignup();
 
   const handlePasswordChange = (e) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    const isValidPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(newPassword);
-    setIsValid(isValidPassword);
-    setIsConfirmed(newPassword === confirmPassword);
+    setPassword(e.target.value);
+    setIsConfirmed(password === confirmPassword);
   };
 
   const handleConfirmPassword = (e) => {
@@ -34,14 +30,12 @@ export default function Signup() {
     e.preventDefault();
     if (!displayName || !email || !password || !confirmPassword) {
       toast.error("Please fill out each input field", { autoClose: 2000 });
-    } else if (!isValid) {
-      toast.error("Password is invalid. Please follow the password requirements.", { autoClose: 2000 });
       return;
     } else if (!isConfirmed) {
       toast.warning("Passwords do not match. Please confirm your password.", { autoClose: 2000 });
       return;
     } else if (isConfirmed) {
-      signup(displayName, email, password, thumbnail);
+      signup(email, password, displayName, thumbnail);
       return;
     }
     console.log(error);
@@ -49,27 +43,26 @@ export default function Signup() {
 
 
   const handleFileChange = (e) => {
-    e.preventDefault();
     setThumbnail(null)
     let selected = e.target.files[0]
     console.log(selected);
 
     if (!selected) {
       setThumbnailError("Please select an image");
-      return
+      return;
     }
     if (!selected.type.includes("image")) {
       setThumbnailError('Selected file must be an image');
-      return
+      return;
     }
-    if (selected > 100000) {
+    if (selected.size > 100000) {
       setThumbnailError('Image file size must be less than 100kb');
-      return
+      return;
     }
 
     setThumbnailError(null);
     setThumbnail(selected);
-    toast.success("Thumbnail Updated :)");
+    toast.success("Thumbnail Updated");
   }
 
 
@@ -101,13 +94,8 @@ export default function Signup() {
           value={password}
           onChange={handlePasswordChange}
           placeholder='*********'
-          className={isValid ? 'valid-input' : 'invalid-input'}
+          className={isConfirmed ? 'valid-input' : 'invalid-input'}
         />
-        {isValid ? (
-          <p>Password is valid!</p>
-        ) : (
-          <p>Password must contain at least one uppercase & lowercase letter, one digit, one special character, and be at least 8 characters long.</p>
-        )}
       </label>
       <label>
         <span>Confirm Password:</span>
@@ -121,7 +109,7 @@ export default function Signup() {
         {isConfirmed ? (
           <p>Password Matched</p>
         ) : (
-          <p>Password must match</p>
+          <></>
         )}
       </label>
       <label>
@@ -133,8 +121,9 @@ export default function Signup() {
         />
         {thumbnailError && <div className="error">{thumbnailError}</div>}
       </label>
-      {!isPending && <button className="btn">Signup</button>}
-      {isPending && <button className='btn-loading' disabled>loading</button>}
+      <button className="btn">Signup</button>
+      {/* {!isPending && <button className="btn">Signup</button>}
+      {isPending && <button className='btn-loading' disabled>loading</button>} */}
       <Link
         to={'/login'}
         style={{ color: "blue", fontSize: "14px", textAlign: "end" }}

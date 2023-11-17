@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { projectAuth, projectStorage } from "../firebase/config"
+import { projectAuth, projectFirestore, projectStorage } from "../firebase/config"
 import { toast } from 'react-toastify';
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from 'react-router-dom';
@@ -12,28 +12,35 @@ export const useSignup = () => {
 
   const navigate = useNavigate();
 
-  const signup = async (displayName, email, password, thumbnail) => {
+  const signup = async (email, password, displayName, thumbnail) => {
     setError(null);
     setIsPending(true);
 
     try {
       // signup user
-      const response = await projectAuth.createUserWithEmailAndPassword(email, password);
+      const res = await projectAuth.createUserWithEmailAndPassword(email, password);
 
-      if (!response) {
-        throw new Error("Couldn't complete signup")
+      if (!res) {
+        throw new Error("Couldn't complete signup");
       }
 
       // upload user thumbnail
-      const uploadPath = `thumbnails/${response.user.uid}/${thumbnail.name}`;
+      const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
       const img = await projectStorage.ref(uploadPath).put(thumbnail);
       const imgUrl = await img.ref.getDownloadURL(); 
 
-      // create display name for user 
-      await response.user.updateProfile({ displayName, photoURL: imgUrl })
+      // add display AND PHOTO_URL name to user
+      await res.user.updateProfile({ displayName, photoURL: imgUrl })
+
+      // create a user document
+      await projectFirestore.collection('users').doc(res.user.uid).set({ 
+        online: true,
+        displayName,
+        photoURL: imgUrl,
+      })
 
       // dispatch login action
-      dispatch({ type: "LOGIN", payload: response.user })
+      dispatch({ type: "LOGIN", payload: res.user })
 
       // updating state if the component is unmounted
       if (!isCancelled) {

@@ -5,9 +5,9 @@ import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from 'react-router-dom';
 
 export const useLogin = () => {
-  const [ isCancelled, setIsCancelled ] = useState(false);
-  const [ error, setError ] = useState(null);
-  const [ isPending, setIsPending ] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [error, setError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
 
   const navigate = useNavigate();
@@ -39,12 +39,13 @@ export const useLogin = () => {
       }
     }
 
-    // cleanup function
-    useEffect(() => {
-      return () => setIsCancelled(true);
-    }, [])
-    
+
   };
-  
+
+  // cleanup function
+  useEffect(() => {
+    return () => setIsCancelled(true);
+  }, [])
+
   return { login, error, isPending };
 };
