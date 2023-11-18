@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react"
-import { projectAuth, projectFirestore, projectStorage } from "../firebase/config"
+import { useEffect, useState } from "react";
+import { projectAuth, projectFirestore, projectStorage } from "../firebase/config";
 import { toast } from 'react-toastify';
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from 'react-router-dom';
 
 export const useSignup = () => {
-  const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
-
   const navigate = useNavigate();
 
   const signup = async (email, password, displayName, thumbnail) => {
@@ -17,53 +15,48 @@ export const useSignup = () => {
     setIsPending(true);
 
     try {
-      // signup user
       const res = await projectAuth.createUserWithEmailAndPassword(email, password);
 
       if (!res) {
         throw new Error("Couldn't complete signup");
       }
 
-      // upload user thumbnail
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
-      const img = await projectStorage.ref(uploadPath).put(thumbnail);
-      const imgUrl = await img.ref.getDownloadURL(); 
+      const storageRef = projectStorage.ref(uploadPath);
 
-      // add display AND PHOTO_URL name to user
-      await res.user.updateProfile({ displayName, photoURL: imgUrl })
+      try {
+        const snapshot = await storageRef.put(thumbnail);
+        var imgUrl = await snapshot.ref.getDownloadURL();
+        console.log("Image uploaded successfully. Download URL:", imgUrl);
+      } catch (error) {
+        console.error("Error uploading image:", error.message);
+        throw new Error("Error uploading image");
+      }
 
-      // create a user document
-      await projectFirestore.collection('users').doc(res.user.uid).set({ 
+      await res.user.updateProfile({ displayName, photoURL: imgUrl });
+
+      await projectFirestore.collection('users').doc(res.user.uid).set({
         online: true,
         displayName,
         photoURL: imgUrl,
-      })
+      });
 
-      // dispatch login action
-      dispatch({ type: "LOGIN", payload: res.user })
+      dispatch({ type: "LOGIN", payload: res.user });
 
-      // updating state if the component is unmounted
-      if (!isCancelled) {
-        setIsPending(false);
-        setError(null);
-        toast.success("Account created successfully", { autoClose: 2000 });
-        navigate("/");
-      }
+      setIsPending(false);
+      toast.success("Account created successfully", { autoClose: 2000 });
+      navigate("/");
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
+      setIsPending(false);
+      toast.error(err.message, { autoClose: 2000, type: 'error' });
     }
-    catch (err) {
-      if (!isCancelled) {
-        console.log(err.message);
-        setError(err.message);
-        setIsPending(false);
-        toast(err.message, { autoClose: 2000, type: 'error' });
-      }
-    }
-  }
+  };
 
-    // cleanup function
-    useEffect(() => {
-      return () => setIsCancelled(true);
-    }, []);
+  useEffect(() => {
+    return () => setIsPending(false); // This will run when the component unmounts
+  }, []);
 
   return { signup, error, isPending };
-}
+};

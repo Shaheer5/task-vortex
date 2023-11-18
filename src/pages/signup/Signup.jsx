@@ -62,7 +62,7 @@ export default function Signup() {
 
     setThumbnailError(null);
     setThumbnail(selected);
-    toast.success("Thumbnail Updated");
+    toast.success("Thumbnail Updated", {autoClose: 2000});
   }
 
 
@@ -121,9 +121,9 @@ export default function Signup() {
         />
         {thumbnailError && <div className="error">{thumbnailError}</div>}
       </label>
-      <button className="btn">Signup</button>
-      {/* {!isPending && <button className="btn">Signup</button>}
-      {isPending && <button className='btn-loading' disabled>loading</button>} */}
+      {/* <button className="btn">Signup</button> */}
+      {!isPending && <button className="btn">Signup</button>}
+      {isPending && <button className='btn-loading btn' disabled>loading</button>}
       <Link
         to={'/login'}
         style={{ color: "blue", fontSize: "14px", textAlign: "end" }}
