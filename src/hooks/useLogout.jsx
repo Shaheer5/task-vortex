@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react"
-import { projectAuth } from "../firebase/config"
+import { projectAuth, projectFirestore } from "../firebase/config"
 import { toast } from 'react-toastify';
 import { useAuthContext } from "./useAuthContext";
 
 export const useLogout = () => {
-  const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+  const { dispatch, user } = useAuthContext();
+
+  const handleError = (err) => {
+    console.log(err.message);
+    setError(err.message);
+    setIsPending(false);
+    toast.error("Logout unsuccessful", { autoClose: 2000 });
+  };
 
   const logout = async () => {
     setError(null);
@@ -15,32 +21,31 @@ export const useLogout = () => {
 
     // sign the user out
     try {
+      // updating online status to offline
+
+      // const { uid } = user;
+      const { uid } = projectAuth.currentUser;
+
+      await projectFirestore.collection('users').doc(uid).update({ online: false });
+
       await projectAuth.signOut()
 
       // dispatch logout action
-      dispatch({ type: "LOGOUT" })
+      dispatch({ type: "LOGOUT" });
 
-      // updating state if the component is unmounted
-      if (!isCancelled) {
-        setIsPending(false);
-        setError(null);
-        toast.success("Logged out successfully", { autoClose: 2000 });
-      }
+      setIsPending(false);
+      setError(null);
+      toast.success("Logged out successfully", { autoClose: 2000 });
+
     }
     catch (err) {
-      if (!isCancelled) {
-        console.log(err.messaga);
-        setError(err.messaga);
-        setIsPending(false);
-        toast.error("Logout unsuccessful", { autoClose: 2000 });
-      }
+      handleError(err);
     }
-  }
 
-  // cleanup function
+  };
   useEffect(() => {
-    return () => setIsCancelled(true);
+    return () => setIsPending(false); // This will run when the component unmounts
   }, []);
-
+  
   return { logout, error, isPending }
 }

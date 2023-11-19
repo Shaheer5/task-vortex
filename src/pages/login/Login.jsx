@@ -15,6 +15,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(email, password);
     if (!email && !password) {
       toast.error("Please Enter Credentials", { autoClose: 2000 });
       return;
