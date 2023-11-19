@@ -10,6 +10,13 @@ export const useSignup = () => {
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
+  const handleError = (err) => {
+    console.error(err.message);
+    setError(err.message);
+    setIsPending(false);
+    toast.error(err.message, { autoClose: 2000, type: 'error' });
+  }
+
   const signup = async (email, password, displayName, thumbnail) => {
     setError(null);
     setIsPending(true);
@@ -47,10 +54,7 @@ export const useSignup = () => {
       toast.success("Account created successfully", { autoClose: 2000 });
       navigate("/");
     } catch (err) {
-      console.error(err.message);
-      setError(err.message);
-      setIsPending(false);
-      toast.error(err.message, { autoClose: 2000, type: 'error' });
+      handleError(err);
     }
   };
 
