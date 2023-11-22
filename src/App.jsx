@@ -8,6 +8,7 @@ import Signup from "./pages/signup/Signup.jsx";
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import Create from './pages/create/Create.jsx';
 import { useAuthContext } from './hooks/useAuthContext';
+import OnlineUsers from './components/OnlineUsers.jsx';
 
 // styles
 import './App.css'
@@ -32,6 +33,7 @@ function App() {
             <Route path="/create" element={user ? <Create /> : <Navigate to="/" /> } />
           </Routes>
         </div>
+        {user && <OnlineUsers />}
         <ToastContainer />
       </Router>
       )}

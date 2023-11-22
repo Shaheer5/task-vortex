@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { projectFirestore } from '../firebase/config'
 import { toast } from 'react-toastify';
 
-export default function useCollection(collection, _query, _orderBy) {
+export const useCollection = (collection, _query, _orderBy) =>  {
   const [documents, setDocuments] = useState(null);
   const [error, setError] = useState(null);
 
@@ -18,7 +18,7 @@ export default function useCollection(collection, _query, _orderBy) {
     if (query) {
       ref = ref.where(...query);
     }
-    if(orderBy) {
+    if (orderBy) {
       ref = ref.orderBy(...orderBy);
     }
 
