@@ -19,6 +19,7 @@ module.exports = {
     'no-warning-comments': 'off',
     'no-console': 'off',
     'no-unused-vars': 'off',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    'react-refresh/only-export-components': 'off',
   },
 };
