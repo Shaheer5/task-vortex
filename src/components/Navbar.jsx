@@ -27,8 +27,8 @@ export default function Navbar() {
           </>}
         {user &&
           <li>
-            {!isPending && <button className="btn" onClick={logout}>Logout</button>}
-            {isPending && <button className="btn" disabled>Loading...</button>}
+            {!isPending && <button className="btn btn-primary" onClick={logout}>Logout</button>}
+            {isPending && <button className="btn btn-secondary" disabled>Loading...</button>}
           </li>}
       </ul>
 

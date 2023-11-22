@@ -122,8 +122,8 @@ export default function Signup() {
         {thumbnailError && <div className="error">{thumbnailError}</div>}
       </label>
       {/* <button className="btn">Signup</button> */}
-      {!isPending && <button className="btn">Signup</button>}
-      {isPending && <button className='btn-loading btn' disabled>loading</button>}
+      {!isPending && <button className="btn btn-primary">Signup</button>}
+      {isPending && <button className='btn btn-secondary' disabled>loading</button>}
       <Link
         to={'/login'}
         style={{ color: "blue", fontSize: "14px", textAlign: "end" }}

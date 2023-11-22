@@ -56,8 +56,8 @@ export default function Login() {
             placeholder='*********'
           />
         </label>
-        {!isPending && <button className="btn">Login</button>}
-        {isPending && <button className='btn-loading btn' disabled>loading</button>}
+        {!isPending && <button className="btn btn-primary">Login</button>}
+        {isPending && <button className='btn btn-secondary' disabled>loading</button>}
         <Link
           to={'/signup'}
           style={{ color: "blue", fontSize: "14px", textAlign: "end" }}
