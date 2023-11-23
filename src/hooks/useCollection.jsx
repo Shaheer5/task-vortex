@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 export const useCollection = (collection, _query, _orderBy) =>  {
   const [documents, setDocuments] = useState(null);
   const [error, setError] = useState(null);
+  const [ isPending, setIsPending ] = useState(false);
 
   // if we don't use a ref --> infinite loop in useEffect
   // _query is an array and is "different" on every function call
@@ -22,6 +23,8 @@ export const useCollection = (collection, _query, _orderBy) =>  {
       ref = ref.orderBy(...orderBy);
     }
 
+    setIsPending(true);
+
     const unsubcribe = ref.onSnapshot(snapshot => {
       let results = [];
       snapshot.docs.forEach(doc => {
@@ -32,9 +35,11 @@ export const useCollection = (collection, _query, _orderBy) =>  {
       // update status
       setDocuments(results);
       setError(null);
+      setIsPending(false);
     }, (error) => {
       console.log(error);
       setError(error.message);
+      setIsPending(false);
       toast.error("couldn't fetch transactions", { autoClose: 2000 });
     })
 
@@ -43,5 +48,5 @@ export const useCollection = (collection, _query, _orderBy) =>  {
   }, [collection, query, orderBy])
 
 
-  return { documents, error }
+  return { documents, error, isPending }
 }
