@@ -1,9 +1,26 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import Select from 'react-select';
+import { useCollection } from '../../hooks/useCollection';
 
 // styles
 import './Create.css';
 
+const categories = [
+  { value: 'development', label: 'Development' },
+  { value: 'design', label: 'Design' },
+  { value: 'sales', label: 'Sales' },
+  { value: 'marketing', label: 'Marketing' },
+]
+
+
+// Main Function
 export default function Create() {
+
+  const { documents } = useCollection('users');
+  const [users, setUsers] = useState([]);
+
+
   const [name, setName] = useState('');
   const [details, setDetails] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -13,7 +30,8 @@ export default function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(name, details, dueDate)
+    toast.success('Project Added', {autoClose: 2000})
+    console.log(name, details, dueDate, category.value)
   };
 
   return (
@@ -51,6 +69,10 @@ export default function Create() {
         <label htmlFor="">
           <span>Project Category:</span>
           {/* category select here */}
+          <Select 
+            onChange={option => setCategory(option)}
+            options={categories}
+          />
         </label>
         <label htmlFor="">
           <span>Assign to:</span>
