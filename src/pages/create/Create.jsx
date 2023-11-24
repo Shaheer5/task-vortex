@@ -25,11 +25,12 @@ export default function Create() {
   const [dueDate, setDueDate] = useState('');
   const [category, setCategory] = useState('');
   const [assignedUsers, setAssignedUsers] = useState([]);
+  const [formError, setFormError] = useState(null);
 
   useEffect(() => {
     if(documents) {
       const options = documents.map((user) => {
-        return { value: user, label: user.displayName }
+        return { value: {...user, id: user.id}, label: user.displayName }
       })
       setUsers(options);
     }
@@ -41,7 +42,16 @@ export default function Create() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(null);
 
+    if(!category) {
+      setFormError('Select category');
+      return
+    }
+    if(assignedUsers.length < 1) {
+      setFormError('Assign to at least 1 user');
+      return
+    }
     toast.success('Project Added', {autoClose: 2000})
     console.log(name, details, dueDate, category.value, assignedUsers)
   };
@@ -95,6 +105,8 @@ export default function Create() {
         </label>
 
         <button type="submit" className='btn btn-primary'>Add Project</button>
+        {formError && <p className="error">{formError}</p>}
+
       </form>
     </div>
   )
