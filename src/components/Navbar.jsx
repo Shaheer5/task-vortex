@@ -31,7 +31,7 @@ export default function Navbar() {
             {isPending && <button className="btn btn-secondary" disabled>Loading...</button>}
           </li>}
       </ul>
-
+          <hr />
     </nav>
   )
 }
