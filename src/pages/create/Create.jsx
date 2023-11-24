@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { useCollection } from '../../hooks/useCollection';
@@ -19,19 +19,31 @@ export default function Create() {
 
   const { documents } = useCollection('users');
   const [users, setUsers] = useState([]);
-
-
+  
   const [name, setName] = useState('');
   const [details, setDetails] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [category, setCategory] = useState('');
   const [assignedUsers, setAssignedUsers] = useState([]);
 
+  useEffect(() => {
+    if(documents) {
+      const options = documents.map((user) => {
+        return { value: user, label: user.displayName }
+      })
+      setUsers(options);
+    }
+    
+    return () => {
+      
+    }
+  }, [documents])
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     toast.success('Project Added', {autoClose: 2000})
-    console.log(name, details, dueDate, category.value)
+    console.log(name, details, dueDate, category.value, assignedUsers)
   };
 
   return (
@@ -68,7 +80,6 @@ export default function Create() {
 
         <label htmlFor="">
           <span>Project Category:</span>
-          {/* category select here */}
           <Select 
             onChange={option => setCategory(option)}
             options={categories}
@@ -76,7 +87,11 @@ export default function Create() {
         </label>
         <label htmlFor="">
           <span>Assign to:</span>
-          {/* assignee select here */}
+          <Select 
+            onChange={option => setAssignedUsers(option)}
+            options={users}
+            isMulti
+          />
         </label>
 
         <button type="submit" className='btn btn-primary'>Add Project</button>
