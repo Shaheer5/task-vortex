@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { useCollection } from '../../hooks/useCollection';
+import { useNavigate } from 'react-router-dom';
 import { timestamp } from '../../firebase/config';
-import { useAuthContext } from '../../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useFirestore } from '../../hooks/useFirestore';
 
 // styles
 import './Create.css';
@@ -19,9 +21,12 @@ const categories = [
 // Main Function
 export default function Create() {
 
+  const { addDocument, response } = useFirestore('projects');
   const { documents } = useCollection('users');
   const [users, setUsers] = useState([]);
+  const { user } = useAuthContext();
   
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [details, setDetails] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -29,7 +34,6 @@ export default function Create() {
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [formError, setFormError] = useState(null);
 
-  const { user } = useAuthContext();
 
   useEffect(() => {
     if(documents) {
@@ -81,6 +85,13 @@ export default function Create() {
     }
     toast.success('Project Added', {autoClose: 2000})
     console.log(project)
+
+    await addDocument(project);
+
+    if(!response.error) {
+      navigate('/');
+    }
+
   };
 
   return (
