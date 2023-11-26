@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { useCollection } from '../../hooks/useCollection';
+import { timestamp } from '../../firebase/config';
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 // styles
 import './Create.css';
@@ -26,6 +28,8 @@ export default function Create() {
   const [category, setCategory] = useState('');
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [formError, setFormError] = useState(null);
+
+  const { user } = useAuthContext();
 
   useEffect(() => {
     if(documents) {
@@ -52,8 +56,31 @@ export default function Create() {
       setFormError('Assign to at least 1 user');
       return
     }
+
+    const assignedUsersList = assignedUsers.map(u => {
+      return {
+        displayName: u.value.displayName,
+        photo: u.value.photoURL,
+        id: u.value.id,
+      }
+    })
+
+    const createdBy = {
+      displayName: user.displayName,
+      photo: user.photoURL,
+      id: user.uid,
+    }
+    const project = {
+      name,
+      details,
+      category: category.value,
+      dueDate: timestamp.fromDate(new Date(dueDate)),
+      comments: [],
+      createdBy,
+      assignedUsersList,
+    }
     toast.success('Project Added', {autoClose: 2000})
-    console.log(name, details, dueDate, category.value, assignedUsers)
+    console.log(project)
   };
 
   return (
