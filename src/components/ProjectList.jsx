@@ -7,7 +7,7 @@ import './ProjectList.css';
 
 export default function ProjectList({ projects }) {
   return (
-    <div>
+    <div className='project-list'>
       {projects.length === 0 && <p>No Projects yet!</p>}
 
       {projects && projects.map(project => (
@@ -16,11 +16,10 @@ export default function ProjectList({ projects }) {
           <p>Due by {project.dueDate.toDate().toDateString()}</p>
 
           <div className="assigned-to">
-            <p>Assigned users:</p>
             <ul>
               {project.assignedUsersList.map(user => (
                 <li key={user.photoURL}>
-                  <p>{user.displayName}</p>
+                  <p className='username'>{user.displayName}</p>
                   <Avatar src={user.photoURL}/>
                 </li>
               ))}

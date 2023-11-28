@@ -41,7 +41,7 @@ export const useLogout = () => {
     catch (err) {
       handleError(err);
     }
-
+    
   };
   useEffect(() => {
     return () => setIsPending(false); // This will run when the component unmounts
