@@ -7,6 +7,7 @@ import Login from "./pages/login/Login.jsx";
 import Signup from "./pages/signup/Signup.jsx";
 import Dashboard from './pages/dashboard/Dashboard.jsx';
 import Create from './pages/create/Create.jsx';
+import Project from './pages/project/Project.jsx'
 import { useAuthContext } from './hooks/useAuthContext';
 import OnlineUsers from './components/OnlineUsers.jsx';
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
             <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" /> } />
             <Route path="/create" element={user ? <Create /> : <Navigate to="/" /> } />
+            <Route path="/projects/:id" element={user ? <Project /> : <Navigate to="/" /> } />
           </Routes>
         </div>
         {user && <OnlineUsers />}
