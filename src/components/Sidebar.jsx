@@ -9,7 +9,7 @@ import Avatar from './Avatar'
 import "./Sidebar.css"
 export default function Sidebar() {
 
-  const { user, auhtIsReady } = useAuthContext();
+  const { user } = useAuthContext();
 
   return (
     <div className='sidebar'>
