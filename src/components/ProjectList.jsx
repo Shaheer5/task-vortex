@@ -13,10 +13,10 @@ export default function ProjectList({ projects }) {
           <h4>{project.name}</h4>
           <p>Due by {project.dueDate.toDate().toDateString()}</p>
 
-          <div className="assigned-to">
+          <div className="assigned-to"> 
             <ul>
               {project.assignedUsersList.map((user) => (
-                <li key={user.photoURL}>
+                <li key={user.id}>
                   <p>Assigned to:</p>
                   <p className='username'>{user.displayName}</p>
                   <Avatar src={user.photoURL} />
@@ -24,7 +24,7 @@ export default function ProjectList({ projects }) {
               ))}
             </ul>
           </div>
-          
+
         </Link>
       ))}
     </div>
