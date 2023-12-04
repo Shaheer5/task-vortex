@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { timestamp } from '../../firebase/config';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useFirestore } from '../../hooks/useFirestore';
+import Avatar from '../../components/Avatar';
 
 export const ProjectComments = ({ project }) => {
 
@@ -23,7 +24,7 @@ export const ProjectComments = ({ project }) => {
       comments: [...project.comments, commentToAdd]
     })
 
-    if(!response.error) {
+    if (!response.error) {
       setNewComment('');
     }
   }
@@ -31,13 +32,32 @@ export const ProjectComments = ({ project }) => {
   return (
     <div className='project-comments'>
       <h4>Project Comments</h4>
-      <form className='add-newComment' onSubmit={handleSubmit}>
-        <textarea
-          required
-          onChange={e => setNewComment(e.target.value)}
-          value={newComment}>
 
-        </textarea>
+      <ul>
+        {project.comments.length > 0 && project.comments.map(comment => (
+          <li key={comment.id}>
+            <div className='comment-author'>
+              <Avatar src={comment.photoURL} />
+              <p>{comment.displayName}</p>
+            </div>
+            <div className='comment-date'>
+              <p>date here</p>
+            </div>
+            <div className='comment-content'>
+              <p>{comment.content}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <form className='add-comment' onSubmit={handleSubmit}>
+        <label>
+          <span>Add new comment:</span>
+          <textarea
+            required
+            onChange={e => setNewComment(e.target.value)}
+            value={newComment} />
+        </label>
         <button className='btn btn-secondary'>add comment</button>
       </form>
     </div>
