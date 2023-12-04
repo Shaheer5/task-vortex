@@ -51,7 +51,7 @@ export const useFirestore = (collection) => {
     }
     catch (err) {
       dispatchIfNotCancelled({ type: "ERROR", payload: err.message })
-      toast.error("couldn't add transaction", err.message, { autoClose: 2000 });
+      toast.error("Couldn't add Project", err.message, { autoClose: 2000 });
     }
 
   }
@@ -63,11 +63,11 @@ export const useFirestore = (collection) => {
     try {
       await ref.doc(id).delete();
       dispatchIfNotCancelled({ type: "DELETED_DOCUMENT" })
-      toast.success("Transaction Deleted", { autoClose: 2000 });
+      toast.success("Project Successfully Deleted", {autoClose: 2000});
     }
     catch (err) {
       dispatchIfNotCancelled({ type: "ERROR", payload: err.message });
-      toast.error("couldn't delete transaction", err.message, { autoClose: 2000 });
+      toast.error("Couldn't Delete Project", err.message, { autoClose: 2000 });
     }
 
   }

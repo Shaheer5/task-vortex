@@ -30,13 +30,15 @@
   border-top: 1px solid #eee;
 }
 
-.project-list ul {
+.project-list .users-list {
   margin: 10px 0;
-  display: flex;
+  display: block;
 }
 
-.project-list li {
+.project-list .user {
   margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .project-list .username {

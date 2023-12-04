@@ -12,16 +12,16 @@ export default function ProjectList({ projects }) {
           <h4>{project.name}</h4>
           <p>Due by {project.dueDate.toDate().toDateString()}</p>
 
-          <div className="assigned-to"> 
-            <ul>
+          <div className="assigned-to">
+            <div className="users-list">
+              <p>Assigned to:</p>
               {project.assignedUsersList.map((user) => (
-                <li key={user.id}>
-                  <p>Assigned to:</p>
-                  <p className='username'>{user.displayName}</p>
-                  <Avatar src={user.photoURL} />
-                </li>
+                <div key={user.id} className='user'>
+                  {/* <Avatar src={user.photoURL} /> */}
+                  <p className='username' style={{marginLeft: "4px"}}>{user.displayName}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
         </Link>

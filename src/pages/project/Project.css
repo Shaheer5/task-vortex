@@ -31,15 +31,21 @@
 }
 
 .project-summary .assigned-users {
-  display: flex;
+  /* display: flex; */
   margin-top: 20px;
+}
+
+.project-summary .assigned-users .user {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
 }
 
 .project-summary .assigned-users .avatar {
   margin-right: 10px;
 }
 
-.project-summary+.btn {
+.project-summary +.btn {
   margin-top: 20px;
 }
 

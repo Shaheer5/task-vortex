@@ -46,6 +46,7 @@ export default function Login() {
             value={email}
             placeholder='name@email.com'
           />
+          <em style={{fontSize: "14px"}}>use email: test@email.com</em>
         </label>
         <label>
           <span>Password</span>
@@ -55,6 +56,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder='*********'
           />
+          <em style={{fontSize: "14px"}}>use password: 12345678</em>
         </label>
         {!isPending && <button className="btn btn-primary">Login</button>}
         {isPending && <button className='btn btn-secondary' disabled>loading</button>}
