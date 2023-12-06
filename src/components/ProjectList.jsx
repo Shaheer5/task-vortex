@@ -18,7 +18,7 @@ export default function ProjectList({ projects }) {
               {project.assignedUsersList.map((user) => (
                 <div key={user.id} className='user'>
                   {/* <Avatar src={user.photoURL} /> */}
-                  <p className='username' style={{marginLeft: "4px"}}>{user.displayName}</p>
+                  <p className='username' style={{ marginLeft: "4px" }}>{user.displayName}</p>
                 </div>
               ))}
             </div>
