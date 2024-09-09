@@ -3,12 +3,15 @@ import { projectAuth, projectFirestore } from "../firebase/config";
 import { toast } from 'react-toastify';
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setUser } from "../state/user/userSlice";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleError = (err) => {
     setError(err.message);
@@ -26,7 +29,10 @@ export const useLogin = () => {
       await projectFirestore.collection('users').doc(res.user.uid).update({ online: true });
 
       // Dispatch login action
-      dispatch({ type: "LOGIN", payload: res.user });
+      // dispatch({ type: "LOGIN", payload: res.user });
+
+      dispatch(setUser(res.user))
+
 
       setIsPending(false);
       setError(null);

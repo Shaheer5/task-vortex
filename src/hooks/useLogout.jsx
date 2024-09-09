@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react"
-import { projectAuth, projectFirestore } from "../firebase/config"
-import { toast } from 'react-toastify';
+import { useEffect, useState } from "react";
+import { projectAuth, projectFirestore } from "../firebase/config";
+import { toast } from "react-toastify";
 import { useAuthContext } from "./useAuthContext";
+import { useDispatch } from "react-redux";
+import { setUser } from "../state/user/userSlice";
 
 export const useLogout = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { dispatch, user } = useAuthContext();
+  // const { dispatch, user } = useAuthContext();
+  const dispatch = useDispatch()
 
   const handleError = (err) => {
     console.log(err.message);
@@ -26,26 +29,26 @@ export const useLogout = () => {
       // const { uid } = user;
       const { uid } = projectAuth.currentUser;
 
-      await projectFirestore.collection('users').doc(uid).update({ online: false });
+      await projectFirestore.collection("users").doc(uid).update({ online: false });
 
-      await projectAuth.signOut()
+      await projectAuth.signOut();
 
       // dispatch logout action
-      dispatch({ type: "LOGOUT" });
+      // dispatch({ type: "LOGOUT" });
 
-      setIsPending(false);
+      dispatch(setUser(null))
+
+
+      setIsPending(false);  
       setError(null);
       toast.success("Logged out successfully", { autoClose: 2000 });
-
-    }
-    catch (err) {
+    } catch (err) {
       handleError(err);
     }
-    
   };
   useEffect(() => {
     return () => setIsPending(false); // This will run when the component unmounts
   }, []);
-  
-  return { logout, error, isPending }
-}
+
+  return { logout, error, isPending };
+};

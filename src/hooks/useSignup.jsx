@@ -3,12 +3,16 @@ import { projectAuth, projectFirestore, projectStorage } from "../firebase/confi
 import { toast } from 'react-toastify';
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setUser } from "../state/user/userSlice";
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch()
 
   const handleError = (err) => {
     console.error(err.message);
@@ -48,7 +52,8 @@ export const useSignup = () => {
         photoURL: imgUrl,
       });
 
-      dispatch({ type: "LOGIN", payload: res.user });
+      // dispatch({ type: "LOGIN", payload: res.user });
+      dispatch(setUser(res.user))
 
       setIsPending(false);
       toast.success("Account created successfully", { autoClose: 2000 });

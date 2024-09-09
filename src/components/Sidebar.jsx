@@ -7,9 +7,10 @@ import Avatar from './Avatar'
 
 // styles
 import "./Sidebar.css"
+import { useSelector } from 'react-redux';
 export default function Sidebar() {
 
-  const { user } = useAuthContext();
+  const user = useSelector((state) => state.user.user);
 
   return (
     <div className='sidebar'>
