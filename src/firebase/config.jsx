@@ -1,20 +1,19 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
-import 'firebase/storage'
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDOdQu2AGRW4skLfCG3gy4FPlaXP3weXK4",
-    authDomain: "taskvortex-1b612.firebaseapp.com",
-    projectId: "taskvortex-1b612",
-    storageBucket: "taskvortex-1b612.appspot.com",
-    messagingSenderId: "392003510104",
-    appId: "1:392003510104:web:33e3005979900a682b4f2d"
-  };
-
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
 //   init firebase
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
 // init services
 const projectFirestore = firebase.firestore();
@@ -22,4 +21,4 @@ const projectAuth = firebase.auth();
 const timestamp = firebase.firestore.Timestamp;
 const projectStorage = firebase.storage();
 
-export { projectFirestore, projectAuth, timestamp, projectStorage }
+export { projectFirestore, projectAuth, timestamp, projectStorage };
